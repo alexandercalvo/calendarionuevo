@@ -1,3 +1,4 @@
+
 let $d = document,
 $calendarHeader = $d.createElement("section"),
 $btnControlNext = $d.createElement("i"),
@@ -14,12 +15,15 @@ $continerCalendar = $d.querySelector("#calendar");
 $titleMont1.classList.add("titleMonth1");
 $titleMont2.classList.add("titleMonth2");
 $calendarGridHeader.classList.add("grid_calendar");
-$calendarGridHeader2.classList.add("grid_calendar");
+$calendarGridHeader2.classList.add("grid_calendar2");
 $calendarBody.classList.add("continer_calendar");
 $btnControlNext.classList.add("fa-solid", "fa-circle-left");
 $btnControlPrevius.classList.add("fa-solid", "fa-circle-right");
 $calendarHeader.classList.add("heder__calendar")
-const DAY_WEEK = ['LUN', 'MAR', 'MIE', 'JUE', 'VIE','SAB', 'DOM'];
+const DAY_WEEK = ['DOM','LUN', 'MAR', 'MIE', 'JUE', 'VIE','SAB'];
+const MONTHS = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL','MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OBTUBRE', 'NOVIEMBRE', 'DICIEMBRE']
+let momento = moment("12-25-1995", "MM-DD-YYYY");
+
 
 //crea el calendario doble
 const createCalendar = ($continerCalendar) =>{
@@ -210,3 +214,51 @@ class Calendar {
         return this.selectedDate;
     }
 }
+let fecha = moment('2016-03-12');
+
+
+let ayer = fecha.clone().subtract(9, 'day').format('LL');    
+console.log(fecha);
+console.log(ayer)
+
+//metodo para saber cuantos dias tiene un mes
+const getNumberDaysMonths = ( year, months) =>{
+   return moment(year+months, "YYYY-MM").daysInMonth();
+
+}
+
+//metodo que retorna el dia de la semana en el que comienza el mes
+const getDayWeekOnStart = (year, months, day) =>{
+    return (moment(year+"-"+months+"-"+day).day()) ; 
+
+}
+
+//metodo para rellenar el calendario
+const fillCalendar = (year, month, fistDay, calendarGridHeader) =>{
+    //obtiene el número del mes actual
+  
+    const STARTLINE = fistDay+1;
+    const ENDlINE = fistDay+2;
+    for(let index=1; index <= getNumberDaysMonths(year, month); index++){
+        let day = $d.createElement("span");
+        day.classList.add("grid__cell", "grid__cell--gd");
+        day.setAttribute("data-cell-id",`${index}` );
+        day.textContent=index;  
+        calendarGridHeader.appendChild(day);
+    }  
+    calendarGridHeader.children[7].style.gridColumnStart = STARTLINE;
+    calendarGridHeader.children[7].style.gridColumnEnd = ENDlINE;
+    
+
+    
+    
+}
+let month = moment().format('MM');
+let year =  moment().format('YYYY');
+let fistDay = getDayWeekOnStart(year, month, "01");
+fillCalendar( year,month ,fistDay, $calendarGridHeader);
+let mess = moment().add(1, 'month').format('MM');
+fistDay = getDayWeekOnStart(year, mess, "01");
+month = moment().format('MM')
+console.log(mess )
+fillCalendar( year,mess ,fistDay, $calendarGridHeader2);
