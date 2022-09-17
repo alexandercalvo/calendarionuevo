@@ -86,19 +86,28 @@ const fillCalendar = (year, month, fistDay, calendarGridHeader, titleMont) =>{
     }
 
     const MONTHS_START=(month-1);
-    console.log("EL MEES ES"+"moment "+month+MONTHS[MONTHS_START]);
     titleMont.textContent=MONTHS[MONTHS_START];
     
     for(let index=1; index <= getNumberDaysMonths(year, month); index++){
         let day = $d.createElement("span");
         day.classList.add("grid__cell", "grid__cell--gd");
         day.setAttribute("data-cell-id",`${index}` );
+        day.setAttribute("id", `day${index}`);
         day.textContent=index;  
+        
         calendarGridHeader.appendChild(day);
     }  
     calendarGridHeader.children[7].style.gridColumnStart = STARTLINE;
     calendarGridHeader.children[7].style.gridColumnEnd = ENDlINE;
    
+}
+
+const removeChild = (numberChild, continerCalendar) =>{
+    for(let index=1; index<=numberChild; index++){   
+        continerCalendar.removeChild($d.querySelector(`#day${index}`));      
+       console.log("debe remover"+index);
+    }
+    
 }
 
 
@@ -119,20 +128,31 @@ $d.addEventListener("DOMContentLoaded", ()=>{
 });
 
 $d.addEventListener("click", (e)=>{
-    if(e.target == $btnControlNext){
-        monthCalendar1 =
-        console.log(monthCalendar1)
-        /*fistDayCalendar1 = getDayWeekOnStart(yearCalendar, monthCalendar1, "01");
+    if(e.target == $btnControlPrevius){
+        removeChild(getNumberDaysMonths(yearCalendar, monthCalendar1), $calendarGridHeader);
+        removeChild(getNumberDaysMonths(yearCalendar, monthCalendar2), $calendarGridHeader2);
+        monthCalendar1 = monthCalendar2;
+        fistDayCalendar1 = getDayWeekOnStart(yearCalendar, monthCalendar1, "01");
         fillCalendar( yearCalendar ,monthCalendar1 ,fistDayCalendar1, $calendarGridHeader, $titleMont1 );
     
-        monthCalendar2 = monthCalendar2.clone().add(1, 'month')
+        monthCalendar2 = moments.clone().add(1, 'month').format("MM");
         fistDayCalendar2 = getDayWeekOnStart(yearCalendar, monthCalendar2, "01");
         fillCalendar( yearCalendar,monthCalendar2 ,fistDayCalendar2, $calendarGridHeader2, $titleMont2);
 
-        */
-        console.log(monthCalendar1);
     }
 
-    if(e.target == $btnControlPrevius){
+    if(e.target == $btnControlNext){
+
+        removeChild(getNumberDaysMonths(yearCalendar, monthCalendar1), $calendarGridHeader);
+        removeChild(getNumberDaysMonths(yearCalendar, monthCalendar2), $calendarGridHeader2);
+        monthCalendar2 = monthCalendar1;
+        fistDayCalendar2 = getDayWeekOnStart(yearCalendar, monthCalendar2, "01");
+        fillCalendar( yearCalendar,monthCalendar2 ,fistDayCalendar2, $calendarGridHeader2, $titleMont2);
+
+
+        monthCalendar1 = moments.clone().subtract(1, 'month').format('MM');
+        fistDayCalendar1 = getDayWeekOnStart(yearCalendar, monthCalendar1, "01");
+        fillCalendar( yearCalendar ,monthCalendar1 ,fistDayCalendar1, $calendarGridHeader, $titleMont1 );
+    
     }
 });
