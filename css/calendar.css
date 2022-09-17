@@ -91,7 +91,7 @@
 }
 
 .grid__body {
-    grid-auto-rows: 40px;
+    grid-auto-rows: s0px;
     color: var(--color-cell);
 }
 
@@ -105,6 +105,8 @@
 
 .grid__cell--gd {
     cursor: pointer;
+    padding-top: 15px;
+
 }
 
 .grid__cell--selected {
