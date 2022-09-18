@@ -8,20 +8,25 @@
     --color-bg-calendar: #1b1e22;
     --color-cell: #e3e3e3;
     --color-cell-disabled: #424649;
+    --bui_color_white: #fff;
+    --bui_color_gray:rgb(107, 107, 107);
+    --bui_color_green:#116736;
+    --bui__color_hover_gray:#cbcbcb;
 }
+
 
 .root {
     min-height: 100vh;
     padding: 0 15px;
     display: flex;
     justify-content: center;
-    
     align-items: center;
+
 }
 
 
 .name_day{
-    color:#fff;
+    color:var(--bui_color_gray);
    
 
 }
@@ -30,12 +35,17 @@
     font-weight: 900;
     font-size: 30px;
 }
+
+.calendar{
+box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 16px;
+height: 55vh;
+}
+
 .grid_calendar, .grid_calendar2 {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    background-color: #1b1e22;
+    background-color: var(--bui_color_white);
     gap: 5px;
-   
     margin-right: 10px;
     padding: 5px 15px;
 }
@@ -43,7 +53,7 @@
 
 .continer_calendar{
     display: flex;
-    background-color:#1b1e22;
+    background-color:var(--bui_color_white);
     justify-content: space-between;
 
 }
@@ -55,10 +65,10 @@
 }
 .heder__calendar
 {
-    background: #181818;
+    background: var(--bui_color_white);
     display: flex;
     justify-content: space-around;
-    color:#fff;
+    color:var(--bui_color_gray);
     padding: 10px 20px;
 
 }
@@ -71,6 +81,13 @@
     margin-bottom: 30px;
 }
 
+.grid__cell{
+    background-color: var(--bui_color_white);
+}
+
+.grid__cell:hover{
+    background-color: var(--bui__color_hover_gray);
+}
 .calendar .control {
     color: white;
     font-weight: bold;
@@ -100,13 +117,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color:#fff;
+    color:var(--bui_color_gray);
 }
 
 .grid__cell--gd {
     cursor: pointer;
-    padding-top: 15px;
+    padding: 8px 0;
 
+}
+.day__selected{
+    background-color: var(--bui_color_green);
+    color: #fff;
 }
 
 .grid__cell--selected {
