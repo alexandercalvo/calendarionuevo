@@ -11,6 +11,10 @@ $calendarGridHeader2 = $d.createElement("section"),
 $titleMont1 = $d.createElement("span"),
 $titleMont2 = $d.createElement("span"),
 $calendarDay,
+$checkin = $d.querySelector(".checkin"),
+$checkout = $d.querySelector(".checkout"),
+$containerCalendar = document.querySelector(".calendar");
+$buttonCalendar = $d.querySelector(".buttonnCalendar");
 
 moments = moment(),
 monthCalendar1 = moments.format('MM'),
@@ -74,13 +78,15 @@ const fillCalendar = (year, month, fistDay, calendarGridHeader, titleMont) =>{
     const STARTLINE = fistDay+1;
     const ENDlINE = fistDay+2;
     
-    
-
-    
     const MONTHS_START=(month-1);
     titleMont.textContent=` ${MONTHS[MONTHS_START]} ${year}`;
     for(let index=1; index <= getNumberDaysMonths(year, month); index++){
         let day = $d.createElement("span");
+        if(calendarGridHeader.matches(".grid_calendar2")){
+            day.classList.add("calendarb");
+        }else{
+            day.classList.add("calendara");
+        }
         day.classList.add("grid__cell", "grid__cell--gd");
         day.setAttribute("data-cell-id",`${index}` );
         if(index < 10){
@@ -113,6 +119,16 @@ const comapareToDate = (firstDate, lastDate) =>{
 //funcion para escuchar todos los eventos click del documento (calendario) html
 const eventClick = () =>{
     $d.addEventListener("click", (e)=>{  
+      console.log(e.target)
+        if(e.target.matches(".root") || e.target=="body"){
+            let daySelect = $d.querySelectorAll(".day__selected");
+
+             $containerCalendar.classList.add("calendar-visibility");
+            $checkin.textContent = daySelect[0].getAttribute("data-date");
+            $checkout.textContent = daySelect[1].getAttribute("data-date");
+         
+
+        }
         if(e.target == $btnControlNext){   
             removeChild(getNumberDaysMonths(yearCalendar, monthCalendar2), $calendarGridHeader2);
             removeChild(getNumberDaysMonths(yearCalendar, monthCalendar1), $calendarGridHeader);
@@ -142,27 +158,32 @@ const eventClick = () =>{
 
         
         if(e.target.matches(".grid__cell")){
-            console.log("la fecha: "+ e.target.getAttribute("data-date"));
             let selected = $d.querySelectorAll(".day__selected");
-            console.log(selected.length)
         if(selected.length <2){
              e.target.classList.add("day__selected");
             if(selected.length >=1 && comapareToDate(selected[0].getAttribute("data-date"), e.target.getAttribute("data-date"))){
                 
-
+                
             selected[0].classList.remove("day__selected");
           
             e.target.classList.add("day__selected");
 
             }
         }else{
+            removeHover();
             selected[0].classList.remove("day__selected");
             selected[1].classList.remove("day__selected");
             e.target.classList.add("day__selected");
 
-
         }
             
+        }
+ 
+    
+        if(e.target== $buttonCalendar || e.target === $buttonCalendar.children[0] || e.target === $buttonCalendar.children[1] ||
+            e.target === $buttonCalendar.children[2] ||  e.target === $buttonCalendar.children[3] ){
+                $containerCalendar.classList.toggle("calendar-visibility");
+               
         }
     });
 
@@ -177,8 +198,67 @@ $d.addEventListener("DOMContentLoaded", ()=>{
     eventClick();
 
 });
+$d.addEventListener("mousemove", (e)=>{
+  
+    let dayMonths = $d.querySelectorAll(".grid__cell");
+    let selected = $d.querySelectorAll(".day__selected");
+    let $calendarb= document.querySelectorAll(".calendarb");
+    let $calendara= document.querySelectorAll(".calendara");
+    if(e.target.matches(".grid__cell")){
+        
+        if(selected.length >=1 && selected.length <2 ){
+            removeHover();
+            let start = selected[0].getAttribute("data-cell-id");
+            let end = e.target.getAttribute("data-cell-id");
+        
+          
+            if(selected[0].parentNode.matches(".grid_calendar") && e.target.parentNode.matches(".grid_calendar")){
+                let dayMonths = $d.querySelectorAll(".grid__cell");
+            
+                if(!comapareToDate(selected[0].getAttribute("data-date"), e.target.getAttribute("data-date"))){
+                    for(let index=parseInt(start); index<end-1; index++){
+                     dayMonths[index].classList.add("in_range");
+                    }  
+        
+                }
+            }else if(selected[0].parentNode.matches(".grid_calendar2") && e.target.parentNode.matches(".grid_calendar2")){
+                if(!comapareToDate(selected[0].getAttribute("data-date"), e.target.getAttribute("data-date"))){
+            
+                    for(let index=parseInt(start); index<end-1; index++){
+                        $calendarb[index].classList.add("in_range");      
+                     
+                    }  
+        
+                }
+
+            }else{
+                console.log("el tamaño es"+$calendara.length);
+                for(let index=parseInt(start); index<$calendara.length; index++){
+                    $calendara[index].classList.add("in_range");      
+                 
+                }  
+                for(let index=0; index<end-1; index++){
+                    $calendarb[index].classList.add("in_range");      
+                 
+                }  
+
+            }     
+              
+        }
+
+       
+    }
+
+});
 
 
+const removeHover = () =>{
+    let $cellHover = $d.querySelectorAll(".in_range");
+    $cellHover.forEach((elemento)=>{
+        elemento.classList.remove("in_range");
+    })
+}
 
-
- 
+ $d.addEventListener("focus", (e)=>{
+    console.log(e.target);
+ })
